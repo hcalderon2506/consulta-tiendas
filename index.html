@@ -38,7 +38,7 @@
       try {
         const res = await fetch("https://opensheet.elk.sh/1U2pWT5f803NPN1UcfX50zhM3QUs1Jqb5R0aiFoI3ULU/Hoja1");
         const data = await res.json();
-        const tienda = data.find(row => row["CODIGO_TIENDA"] === codigo);
+        const tienda = data.find(row => row["ID"] === codigo);
 
         if (tienda) {
           resultado.innerHTML = `
