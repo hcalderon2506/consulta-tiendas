@@ -42,10 +42,10 @@
 
         if (tienda) {
           resultado.innerHTML = `
-            <strong>Distrito:</strong> ${tienda.DISTRITO || "-"}<br/>
-            <strong>Tienda:</strong> ${tienda.TIENDA || "-"}<br/>
-            <strong>Usuario:</strong> ${tienda.USUARIO || "-"}<br/>
-            <strong>Contraseña:</strong> ${tienda.CONTRASEÑA || "-"}
+            <strong>Distrito:</strong> ${tienda.CITY || "-"}<br/>
+            <strong>Tienda:</strong> ${tienda.STORE || "-"}<br/>
+            <strong>Usuario:</strong> ${tienda.USER || "-"}<br/>
+            <strong>Contraseña:</strong> ${tienda.PASSWORD || "-"}
           `;
         } else {
           resultado.innerHTML = "<span class='not-found'>Código no encontrado.</span>";
