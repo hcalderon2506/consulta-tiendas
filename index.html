@@ -47,3 +47,58 @@
 
   <div id="resultado"></div>
   <button id="copiarBtn" onclick="copiarResultado()">📋 Copiar resultado</button>
+
+  <script>
+    const sheetID = "1HK3ji8TTWidjiHf73exTYzEizqku3_VJD-rQIoDwtKc";
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+
+    let datos = [];
+    let resultadoPlano = "";
+
+    fetch(url)
+      .then(r => r.text())
+      .then(t => {
+        const json = JSON.parse(t.substring(47, t.length - 2));
+        datos = json.table.rows.map(r => r.c.map(c => c ? c.v : ""));
+      })
+      .catch(e => console.error("Error al cargar los datos:", e));
+
+    function buscar() {
+      const tipo = document.getElementById("tipoBusqueda").value;
+      const valor = document.getElementById("valor").value.trim().toLowerCase();
+      const div = document.getElementById("resultado");
+      const btn = document.getElementById("copiarBtn");
+
+      let columnaBusqueda = tipo === "user" ? 3 : 0;
+
+      const fila = datos.find(r => String(r[columnaBusqueda]).toLowerCase() === valor);
+
+      if (fila) {
+        const resultadoHTML = `
+🆔 ID: ${fila[0]}
+📍 DISTRITO: ${fila[1]}
+🏬 TIENDA: ${fila[2]}
+👤 USUARIO: ${fila[3]}
+🔑 CONTRASEÑA: ${fila[4]}
+        `;
+        div.innerText = resultadoHTML.trim();
+        resultadoPlano = resultadoHTML.trim();
+        btn.style.display = "inline-block";
+      } else {
+        div.innerHTML = `<p style="color: red;">Dato no encontrado.</p>`;
+        resultadoPlano = "";
+        btn.style.display = "none";
+      }
+    }
+
+    function copiarResultado() {
+      if (resultadoPlano) {
+        navigator.clipboard.writeText(resultadoPlano).then(() => {
+          alert("Resultado copiado sin líneas vacías.");
+        });
+      }
+    }
+  </script>
+</body>
+</html>
+
