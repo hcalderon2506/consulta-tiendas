@@ -27,6 +27,10 @@
       margin-top: 2rem;
       font-size: 1.1rem;
     }
+    #copiarBtn {
+      display: none;
+      background-color: #28a745;
+    }
   </style>
 </head>
 <body>
@@ -41,6 +45,7 @@
   <button onclick="buscar()">Buscar</button>
 
   <div id="resultado"></div>
+  <button id="copiarBtn" onclick="copiarResultado()">📋 Copiar resultado</button>
 
   <script>
     const sheetID = "1HK3ji8TTWidjiHf73exTYzEizqku3_VJD-rQIoDwtKc";
@@ -60,24 +65,34 @@
       const tipo = document.getElementById("tipoBusqueda").value;
       const valor = document.getElementById("valor").value.trim().toLowerCase();
       const div = document.getElementById("resultado");
+      const btn = document.getElementById("copiarBtn");
 
       let columnaBusqueda = tipo === "user" ? 3 : 0;
 
       const fila = datos.find(r => String(r[columnaBusqueda]).toLowerCase() === valor);
 
       if (fila) {
-        div.innerHTML = `
+        const resultadoHTML = `
           <p>🆔 <b>ID:</b> ${fila[0]}</p>
           <p>📍 <b>DISTRITO:</b> ${fila[1]}</p>
           <p>🏬 <b>TIENDA:</b> ${fila[2]}</p>
           <p>👤 <b>USUARIO:</b> ${fila[3]}</p>
           <p>🔑 <b>CONTRASEÑA:</b> ${fila[4]}</p>
         `;
+        div.innerHTML = resultadoHTML;
+        btn.style.display = "inline-block";
       } else {
         div.innerHTML = `<p style="color: red;">Dato no encontrado.</p>`;
+        btn.style.display = "none";
       }
+    }
+
+    function copiarResultado() {
+      const contenido = document.getElementById("resultado").innerText;
+      navigator.clipboard.writeText(contenido).then(() => {
+        alert("Resultado copiado al portapapeles.");
+      });
     }
   </script>
 </body>
 </html>
-
